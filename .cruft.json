@@ -1,0 +1,31 @@
+{
+    "template": "https://github.com/scverse/cookiecutter-scverse",
+    "commit": "bf251d5f43a2d1da64425a0387c23835ca232979",
+    "checkout": null,
+    "context": {
+        "cookiecutter": {
+            "project_name": "anndata-plot",
+            "package_name": "anndata_plot",
+            "project_description": "plotting primitives at the ecosystem level",
+            "author_full_name": "Tim Treis",
+            "author_email": "tim.treis@scverse.org",
+            "github_user": "scverse",
+            "github_repo": "anndata-plot",
+            "license": "MIT License",
+            "ide_integration": true,
+            "_copy_without_render": [
+                ".github/workflows/build.yaml",
+                ".github/workflows/test.yaml",
+                "docs/_templates/autosummary/**.rst"
+            ],
+            "_render_devdocs": false,
+            "_jinja2_env_vars": {
+                "lstrip_blocks": true,
+                "trim_blocks": true
+            },
+            "_template": "https://github.com/scverse/cookiecutter-scverse",
+            "_commit": "bf251d5f43a2d1da64425a0387c23835ca232979"
+        }
+    },
+    "directory": null
+}
