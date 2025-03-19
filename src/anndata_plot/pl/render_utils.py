@@ -26,7 +26,16 @@ _FontSize = Literal[
 
 @dataclass
 class LegendOpts:
-    legend_position: str = "right"
+    legend_position: str = "inner"
+    legend_cols: int = 1
+    show_legend: bool = True
+
+@dataclass
+class LegendOptsMpl(LegendOpts):
+    legend_font_weight: _FontWeight = "normal"
+    legend_font_size: _FontSize = "medium"
+
+
 
 @dataclass
 class ColorOpts:

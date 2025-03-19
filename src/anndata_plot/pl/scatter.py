@@ -22,60 +22,8 @@ from anndata import AnnData
 
 import holoviews as hv
 
-# def scatter(
-#     adata, #Y: np.ndarray,
-#     Y: Sequence[str],
-#     title: str | None = None,
-#     color_by: str | None = None,
-#     legend_opts: LegendOpts = LegendOpts(),
-#     color_opts: ColorOpts = ColorOpts(),
-#     size_opts: SizeOpts = SizeOpts(),
-#     aixs_opts: AxisOpts = AxisOpts(),
-#     backend_opts: dict = None,
-
-#     # *,
-#     # colors: str | Sequence[ColorLike | np.ndarray] = "blue", #should probably be a colormapping?
-#     # sort_order=True,
-#     # alpha=None,
-#     # highlights=(),
-#     # right_margin=None,
-#     # left_margin=None,
-#     # projection: Literal["2d", "3d"] = "2d",
-#     # title=None,
-#     # component_name="DC",
-#     # component_indexnames=(1, 2, 3),
-#     # axis_labels=None,
-#     # colorbars=(False,),
-#     # sizes=(1,),
-#     # markers=".",
-#     # color_map="viridis",
-#     # show_ticks=True,
-#     # ax=None,
-# ):
-#     # fig = hv.render(hv.Points(adata, Y), backend="matplotlib")
-#     # points = hv.Points(adata, Y, colors).opts(color=colors)
-#     # points.opts(color = colors)
-
-#     # if colors is a column in obs --> hv.Points(adata, Y, colors).opts(color=colors)
-#     # if colors is just one color --> hv.Points(adata, Y).opts(color=colors) --> but is this needed?
-#     # if colors is a var_name --> hv.Points(adata, Y, colors).opts(color=colors)
-
-#     if title is None:
-#         title = f"Scatter plot of {Y[0]} and {Y[1]}"
-
-#     # merge opts dicts
-#     opts = {**asdict(legend_opts),
-#             **asdict(color_opts),
-#             **asdict(size_opts),
-#             "title": title,
-#             }
-
-#     if color_by is None:
-#         return (hv.Points(adata, Y).opts(**opts))
-
-#     return (hv.Points(adata, Y, color_by).opts(**opts))
-
 # copied from scanpy, pl._anndata line +- 235
+# adapted to work with 1 color, that can only be in names or be a column
 def _check_if_annotations(
     adata: AnnData,
     axis_name: Literal["obs", "var"],
@@ -113,10 +61,9 @@ def scatter(
     color_by: str | None = None,
     title: str | None = None,
     color_opts: ColorOpts | dict | None = None,
-    cmap: str | None = None,
-    palette: Sequence[ColorLike] | None = None,
     legend_opts: LegendOpts | dict | None = None,
-    legend_loc: _LegendLoc | None = "right margin",
+    size_opts: SizeOpts | dict | None = None,
+    interactive: bool = False,
 ):
 
     # determine which dims to use
@@ -145,26 +92,19 @@ def scatter(
 
     title_opts = {"title": title}
 
-    # check if color_opts is a dict
-    if isinstance(color_opts, dict):
-        color_opts = get_color_opts(kdims, vdims, color_by, **color_opts)
-    elif color_opts is None:
-        color_opts = get_color_opts(kdims, vdims, color_by, cmap, palette)
+    if interactive:
+        allopts = get_interactive_opts(vdims[0])
+    else:
+        allopts = get_static_opts(vdims[0])
 
     all_opts = {
         **title_opts,
-        **asdict(color_opts),
+        **allopts
     }
-
-    print(locals())
-
-    print(kdims)
-    print(vdims)
-    print(all_opts)
 
     return hv.Points(adata, kdims, vdims).opts(**all_opts)
 
-def get_color_opts(kdims, vdims, color_by = None, cmap = None, palette = None):
+def get_color_opts(kdims, vdims, interactive, color_by = None, cmap = None, palette = None, **kwargs):
     args = {}
 
     if len(vdims) != 0:
@@ -174,3 +114,25 @@ def get_color_opts(kdims, vdims, color_by = None, cmap = None, palette = None):
     if cmap is not None:
         args["cmap"] = cmap
     return ColorOpts(**args)
+
+def get_legend_opts(legend_loc = None, interactive = False, **kwargs):
+    if legend_loc is not None:
+        return LegendOpts(legend_position = legend_loc, **kwargs)
+    return LegendOpts(**kwargs)
+
+
+def get_interactive_opts(color_by):
+    return {
+        "cmap": "viridis",
+        "color": color_by,
+        "width": 550,
+        "height": 550,
+        "legend_position": "bottom_left"
+    }
+
+def get_static_opts(color_by):
+    return {
+        "cmap": "viridis",
+        "color": color_by,
+        "fig_size": 250,
+    }
