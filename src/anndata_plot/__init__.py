@@ -1,8 +1,11 @@
 from importlib.metadata import version
 
-import holoviews as hv
+try:
+    import holoviews as hv
+except ImportError:
+    raise ImportError("holoviews is required for anndata-plot. Please install it with:\npip install holoviews")
 
-from . import pl, pp, tl
+from . import pl
 from .pl.utils import AnnDataInterface
 
 __all__ = ["pl"]

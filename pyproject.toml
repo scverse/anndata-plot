@@ -9,10 +9,10 @@ description = "plotting primitives at the ecosystem level"
 readme = "README.md"
 license = { file = "LICENSE" }
 maintainers = [
-  { name = "Tim Treis", email = "tim.treis@scverse.org" },
+  { name = "scverse", email = "tim.treis@scverse.org" },
 ]
 authors = [
-  { name = "Tim Treis" },
+  { name = "scverse" },
 ]
 requires-python = ">=3.10"
 classifiers = [
