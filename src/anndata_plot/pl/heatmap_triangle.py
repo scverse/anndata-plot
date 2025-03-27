@@ -19,7 +19,7 @@ def heatmap_triangle(
         **cbar_params,
     ) -> None:
     """Plot upper diagonal of a `matrix` as a triangular heatmap
-    
+
     Parameters
     ----------
     matrix : Union[pd.DataFrame, np.array]
@@ -97,7 +97,7 @@ def heatmap_triangle(
             ax.set_yticks([])
             ax.xaxis.tick_top()
 
-    
+
     # If names are given, set them as ticks
     label_loc = np.arange(-N, N, 2) + 1
     match direction:
@@ -111,7 +111,7 @@ def heatmap_triangle(
                 ax.set_xticks(label_loc, names, rotation=ticks_rotation)
             else:
                 ax.set_xticks([])
-    
+
     # Add a colorbar below the heatmap triangle
     if show_cbar:
         if cbar_params is None:
