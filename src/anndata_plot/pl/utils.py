@@ -1,18 +1,22 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import cast, overload
+
 import anndata as ad
 import holoviews as hv
-
 import numpy as np
 
 
 class Raise(Enum):
+    """Marker sentry for raising an exception."""
+
     Sentry = auto()
 
 
 @dataclass
 class AnnDataProxy:
+    """Proxy for anndata, used to get arrays with a mapping-like interface."""
+
     # from: https://gist.github.com/flying-sheep/3ff54234019cc7c84e84cbbe649209c5
 
     adata: ad.AnnData
@@ -23,6 +27,7 @@ class AnnDataProxy:
     def get(self, k: str, /, default: np.ndarray | Raise) -> np.ndarray: ...
 
     def get(self, k: str, /, default: np.ndarray | Raise | None = None) -> np.ndarray | None:
+        """Get an array from an AnnData object."""
         k_orig = k
         if "." not in k:
             if default is not Raise.Sentry and k not in self.adata.var_names:
@@ -53,13 +58,16 @@ class AnnDataProxy:
 
 
 class AnnDataInterface(hv.core.Interface):
+    """Interface for AnnData objects."""
+
     types = (ad.AnnData,)
     datatype = "anndata"
 
     @classmethod
     def init(
         cls, eltype, data: ad.AnnData | AnnDataProxy, kdims: list[str] | None, vdims: list[str] | None
-    ) -> tuple[AnnDataProxy, dict]:
+    ) -> tuple[AnnDataProxy, dict, dict]:
+        """Initialize the interface and return dataset and dimensions."""
         proxy = AnnDataProxy(data) if isinstance(data, ad.AnnData) else data
         return proxy, {"kdims": kdims, "vdims": vdims}, {}
 
@@ -73,12 +81,14 @@ class AnnDataInterface(hv.core.Interface):
         compute=True,
         keep_index=False,
     ) -> np.ndarray:
+        """Get the values of a dimension."""
         dim = data.get_dimension(dim)
         proxy = cast(AnnDataProxy, data.data)
         return proxy[dim.name]
 
     @classmethod
     def dimension_type(cls, data: hv.Dataset, dim: hv.Dimension | str) -> np.dtype:
+        """Get the dtype of a dimension."""
         dim = data.get_dimension(dim)
         proxy = cast(AnnDataProxy, data.data)
         return proxy[dim.name].dtype
