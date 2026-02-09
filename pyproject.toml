@@ -118,9 +118,9 @@ lint.per-file-ignores."tests/*" = [ "D" ]
 lint.pydocstyle.convention = "numpy"
 
 [tool.pytest]
-ini_options.testpaths = [ "tests" ]
-ini_options.xfail_strict = true
-ini_options.addopts = [
+strict = true
+testpaths = [ "tests" ]
+addopts = [
   "--import-mode=importlib", # allow using test files with same name
 ]
 
