@@ -7,9 +7,9 @@
 .. currentmodule:: anndata_plot
 
 .. autosummary::
-    :toctree: generated
+   :toctree: generated
 
-    pp.basic_preproc
+   pp.basic_preproc
 ```
 
 ## Tools
@@ -19,9 +19,9 @@
 .. currentmodule:: anndata_plot
 
 .. autosummary::
-    :toctree: generated
+   :toctree: generated
 
-    tl.basic_tool
+   tl.basic_tool
 ```
 
 ## Plotting
@@ -31,8 +31,8 @@
 .. currentmodule:: anndata_plot
 
 .. autosummary::
-    :toctree: generated
+   :toctree: generated
 
-    pl.basic_plot
-    pl.BasicClass
+   pl.basic_plot
+   pl.BasicClass
 ```

@@ -16,7 +16,7 @@ in particular, the [API documentation][].
 ## Installation
 
 You need to have Python 3.10 or newer installed on your system.
-If you don't have Python installed, we recommend installing [uv][].
+If you don’t have Python installed, we recommend installing [uv][].
 
 There are several alternative options to install anndata-plot:
 
